@@ -49,3 +49,31 @@ title('Loadings Scatter Plot for Components 1 and 2 (w* and c)');
 grid on;
 % Release the hold on the current figure
 hold off;
+
+
+
+% 2.4 
+
+Xtrain = table2array(training_data);
+Ytrain = table2array(training_labels);
+
+Xtest = table2array(testing_data)
+Xtestcs = (Xtest - mean(Xtrain))./std(Xtrain)
+Yhat = Xtestcs * wstar * c'
+Yhat_rescale = Yhat.*std(Ytrain) + mean(Ytrain)
+
+Yo = table2array(testing_labels)
+labels = ["WW-20",'WW-21','WW-22','WW-23','WW-24','WW-25','WW-26']';
+figure;
+hold on;
+fplot(@(x) x);
+scatter(Yhat_rescale, Yo, 'black', 'filled');
+text(Yhat_rescale,Yo, ["WW-20",'WW-21','WW-22','WW-23','WW-24','WW-25','WW-26']', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'bottom', 'Color', 'black');
+title('Observed vs Predicted SNR');
+xlabel('Predicted SNR');
+ylabel('Observed SNR');
+
+grid on;
+hold off;
+
+Q2 = 1 - var(abs(Yhat_rescale-Yo))/var(Yo)
